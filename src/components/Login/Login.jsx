@@ -1,117 +1,132 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { MdClose } from 'react-icons/md'; 
+import { MdClose } from 'react-icons/md';
+import apiClient from "../apiClient";
 
-export const Login = ({ setLoggedIn }) => { 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export const Login = ({ setLoggedIn, setRole }) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [responseMessage, setResponseMessage] = useState('');
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    setResponseMessage('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await apiClient.post('/api/login', formData);
 
-      const data = await response.json();
+      if (response.status === 200) {
+        localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('refresh_token', response.data.refresh_token);
+        setLoggedIn(true);
 
-      if (response.ok) {
-        // Store tokens in localStorage
-        localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('refresh_token', data.refresh_token);
-        
-        setLoggedIn(true);  
-        navigate('/dashboard'); 
+        const fetchUserRole = async (token) => {
+          try {
+            const roleResponse = await apiClient.get('/api/user-role', {
+              headers: {
+                'Authorization': `Bearer ${token}`,
+              },
+            });
+
+            const userRole = roleResponse.data.role;
+            setRole(roleResponse.data.role);
+
+            if (userRole === 'user') {
+              navigate('/');
+            } else if (userRole === 'admin' || userRole === 'vendor') {
+              navigate('/dashboard');
+            } else {
+              setError('Role not found or invalid.');
+            }
+          } catch (error) {
+            setError('An error occurred while fetching user role');
+          }
+        };
+
+        await fetchUserRole(response.data.access_token);
       } else {
-        setResponseMessage(data.non_field_errors || 'Invalid email or password');
+        setError(response.data.non_field_errors || 'Invalid email or password');
       }
-    } catch (err) {
-      setError('An error occurred. Please try again later.');
+    } catch (error) {
+      setError("Invalid username or password.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-lg">
-        <h2 className="text-3xl font-bold text-center text-gray-800">
-          Login
-        </h2>
-        <p className="text-center text-gray-500">
-          Welcome back! Please log in.
-        </p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-lg">
+          <h2 className="text-3xl font-bold text-center text-gray-800">Login</h2>
+          <p className="text-center text-gray-500">Welcome back! Please log in.</p>
+          <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
+            <div>
+              <label className="block text-sm font-medium text-gray-600">Email</label>
+              <input
+                  type="email"
+                  name="email"
+                  className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-600">Password</label>
+              <input
+                  type="password"
+                  name="password"
+                  className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800"
+                  placeholder="Enter your password"
+                  value={formData.password}
+                  onChange={handleChange}
+              />
+            </div>
+            <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-2 font-semibold text-white bg-green-700 rounded-lg hover:bg-green-800 transition duration-300"
+            >
+              {isLoading ? 'Logging in...' : 'Login'}
+            </button>
+          </form>
 
-        {responseMessage && (
-          <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-            role="alert"
-          >
-            <span className="block sm:inline">{responseMessage}</span>
-            <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+          {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <span className="block sm:inline">{error}</span>
+                <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
               <MdClose
-                className="h-6 w-6 text-red-500 cursor-pointer"
-                onClick={() => setResponseMessage('')}
-                role="button"
-                title="Close"
+                  className="h-6 w-6 text-red-500 cursor-pointer"
+                  onClick={() => setError('')}
+                  role="button"
+                  title="Close"
               />
             </span>
-          </div>
-        )}
+              </div>
+          )}
 
-        {error && <p className="text-red-500 text-center">{error}</p>}
-
-        <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <label className="block text-sm font-medium text-gray-600">Email</label>
-            <input
-              type="email"
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-600">Password</label>
-            <input
-              type="password"
-              className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-800"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full py-2 font-semibold text-white bg-green-700 rounded-lg hover:bg-green-800 transition duration-300"
-          >
-            {isLoading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-
-        <div className="text-center">
-          <p className="text-gray-500">
-            Don't have an account?
-            <span className="font-medium text-green-700 cursor-pointer hover:underline mx-2">
+          <div className="text-center">
+            <p className="text-gray-500">
+              Don't have an account?
+              <span className="font-medium text-green-700 cursor-pointer hover:underline mx-2">
               <Link to="/register">Sign Up</Link>
             </span>
-          </p>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
   );
 };

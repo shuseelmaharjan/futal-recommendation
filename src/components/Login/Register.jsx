@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { MdClose } from "react-icons/md";
+import apiClient from "../apiClient";
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -47,7 +47,7 @@ export const Register = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/api/register-user', dataToSend);
+            const response = await apiClient.post('/api/register-user', dataToSend);
             setResponseMessage(response.data.message);
             setUsernameError(response.data.username ? response.data.username[0] : null);
             setEmailError(response.data.email ? response.data.email[0] : null);
