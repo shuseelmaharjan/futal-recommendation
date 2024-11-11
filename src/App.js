@@ -1,15 +1,27 @@
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import { useState } from 'react';
-import AppContent from './AppContent';
+import { Home } from './components/Home/Home';
+import { Login } from './components/Login/Login';
+import { Register } from './components/Login/Register';
+import { Dashboard } from "./components/Dashboard/Dashboard";
+import LoadOut  from "./config/LoadOut";
+import PrivateRoute from "./config/PrivateRoute";
 
 function App() {
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [role, setRole] = useState('');
-
     return (
         <Router>
-            <AppContent loggedIn={loggedIn} setLoggedIn={setLoggedIn} role={role} setRole={setRole} />
+            <LoadOut>
+                <Routes>
+                    <Route path='/' element={<Home />} />
+                    <Route path='/login' element={<Login />} />
+                    <Route path='/register' element={<Register />} />
+                    <Route path='/dashboard' element={
+                        <PrivateRoute>
+                            <Dashboard />
+                        </PrivateRoute>
+                    } />
+                </Routes>
+            </LoadOut>
         </Router>
     );
 }

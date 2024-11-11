@@ -5,9 +5,7 @@ import apiClient from "../apiClient";
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [username, setUsername] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  // Handle scroll effect
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -17,39 +15,23 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch user role if logged in
-  const fetchUserRole = async () => {
+  const fetchUsername = async () => {
     const token = localStorage.getItem('access_token');
-    setIsLoading(true);
-
-    if (!token) {
-      setUsername(null);
-      setIsLoading(false);
-      return;
-    }
-
     try {
       const response = await apiClient.get('/api/username', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
-
-      if (response.status === 200) {
-        setUsername(response.data.username);
-      } else {
-        setUsername(null);
-        setError('Failed to fetch role');
-      }
+      setUsername(response.data.username);
+      console.log("Username fetched from Navbar:" + (response.data.username));
     } catch (err) {
-      setError('An error occurred while fetching user role');
-    } finally {
-      setIsLoading(false);
+      console.error(err)
     }
   };
 
   useEffect(() => {
-    fetchUserRole();
+    fetchUsername();
   }, []);
 
   return (
@@ -60,10 +42,7 @@ export const Navbar = () => {
           </div>
 
           <div className="flex items-center">
-            {/* Check if user is logged in and role is available */}
-            {isLoading ? (
-                <span className="text-white">Loading...</span>
-            ) : username ? (
+            { username ? (
                 <span className="text-white">Hello {username} !</span>
             ) : (
                 <Link to="/login" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
