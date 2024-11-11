@@ -1,59 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
+import {Sidebar} from "../Navbar/Sidebar";
+import {Header} from "../Navbar/Header";
 
 export const Dashboard = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
-
     return (
         <div className="flex h-screen bg-gray-100">
             {/* Sidebar */}
-            <div
-                className={`${
-                    isSidebarOpen ? 'block' : 'hidden'
-                } md:block md:w-64 w-16 bg-gray-800 text-white p-4 space-y-6`}
-            >
-                <div className="text-xl font-semibold">Dashboard</div>
-                <ul className="space-y-4">
-                    <li className="cursor-pointer hover:text-green-400">Home</li>
-                    <li className="cursor-pointer hover:text-green-400">Profile</li>
-                    <li className="cursor-pointer hover:text-green-400">Settings</li>
-                    <li className="cursor-pointer hover:text-green-400">Logout</li>
-                </ul>
-            </div>
+            <Sidebar/>
 
-            {/* Main Content Area */}
+            {/* Main content */}
             <div className="flex-1 flex flex-col">
-                {/* Topbar */}
-                <div className="bg-gray-800 text-white flex justify-between items-center p-4">
-                    <div className="md:hidden">
-                        <button onClick={toggleSidebar} className="text-white">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                className="h-6 w-6"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M4 6h16M4 12h16M4 18h16"
-                                />
-                            </svg>
-                        </button>
+                <Header/>
+                {/* Content Area */}
+                <main className="flex-1 p-6 bg-gray-100">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {/* Example of Content Cards */}
+                        <div className="bg-white rounded-lg shadow-lg p-4">
+                            <h3 className="text-lg font-semibold mb-2">Total Sales</h3>
+                            <p className="text-2xl font-bold text-green-700">$12,345</p>
+                        </div>
+                        <div className="bg-white rounded-lg shadow-lg p-4">
+                            <h3 className="text-lg font-semibold mb-2">New Users</h3>
+                            <p className="text-2xl font-bold text-blue-700">245</p>
+                        </div>
+                        <div className="bg-white rounded-lg shadow-lg p-4">
+                            <h3 className="text-lg font-semibold mb-2">Active Sessions</h3>
+                            <p className="text-2xl font-bold text-yellow-700">56</p>
+                        </div>
+                        {/* Add more cards as needed */}
                     </div>
-                    <div className="text-lg">Username</div>
-                </div>
 
-                {/* Main Content */}
-                <div className="flex-1 p-6 bg-gray-200">
-                    <h2 className="text-2xl font-semibold">Welcome to the Dashboard</h2>
-                    <p className="mt-4">This is the content section of the dashboard.</p>
-                </div>
+                    {/* Detailed Section */}
+                    <div className="mt-8 bg-white p-6 rounded-lg shadow-lg">
+                        <h2 className="text-xl font-semibold mb-4">Analytics Overview</h2>
+                        <p>Here you can display charts, graphs, and further detailed data.</p>
+                    </div>
+                </main>
             </div>
         </div>
     );

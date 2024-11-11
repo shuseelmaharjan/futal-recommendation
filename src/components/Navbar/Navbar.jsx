@@ -7,7 +7,6 @@ export const Navbar = () => {
   const [username, setUsername] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {

@@ -50,11 +50,11 @@ export const Explore = () => {
         ) : coordinates.latitude && coordinates.longitude ? (
           <div>
             <MapContainer
-              center={[coordinates.latitude, coordinates.longitude]}
-              zoom={13}
-              style={{ height: "400px", width: "100%" }}
+                center={[coordinates.latitude, coordinates.longitude]}
+                zoom={13}
+                style={{ height: "400px", width: "100%", zIndex: -20 }}
             >
-              <TileLayer
+            <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
               />
