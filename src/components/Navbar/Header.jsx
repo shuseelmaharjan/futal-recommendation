@@ -1,16 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import apiClient from "../apiClient";
 
 export const Header = () => {
-  return(
-      <>
-          <header className="bg-white shadow-lg px-6 py-4 flex items-center justify-between">
-              <div className="text-2xl font-bold">Welcome, </div>
-              <div>
-                  <button className="text-gray-600 hover:text-gray-800 focus:outline-none">
-                      Notifications
-                  </button>
-              </div>
-          </header>
-      </>
-  );
+    const [username, setUsername] = useState('');
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const token = localStorage.getItem('access_token');
+
+            try {
+                const response = await apiClient.get('/api/username', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+                setUsername(response.data.username);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+    return (
+        <header className="bg-white shadow-lg px-6 py-4 flex justify-between items-end">
+            <div className="text-xl font-bold ml-auto">Welcome, {username}</div>
+        </header>
+    );
 };
