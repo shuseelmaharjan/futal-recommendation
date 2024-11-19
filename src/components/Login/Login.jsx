@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { MdClose } from 'react-icons/md';
 import apiClient from "../apiClient";
 
-export const Login = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -136,3 +136,5 @@ export const Login = () => {
       </div>
   );
 };
+
+export default Login;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { MdClose } from "react-icons/md";
 import apiClient from "../apiClient";
 
-export const Register = () => {
+const Register = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -239,3 +239,5 @@ export const Register = () => {
         </div>
     );
 };
+
+export default Register;
