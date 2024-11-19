@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import logo from './../../assets/logoW.png';
 import { FaHome, FaTasks, FaShoppingCart } from "react-icons/fa";
 import apiClient from "../apiClient";
+import { RiFootballLine } from "react-icons/ri";
+import { MdAttachMoney } from "react-icons/md";
 
 const Sidebar = () => {
     const [role, setRole] = useState('');
@@ -33,7 +35,10 @@ const Sidebar = () => {
             ? [{ path: "/requests", label: "Requests", icon: <FaTasks /> }]
             : []),
         ...(role === "vendor"
-            ? [{ path: "/bookings", label: "Booking", icon: <FaShoppingCart /> }]
+            ? [{ path: "/bookings", label: "Booking", icon: <FaShoppingCart /> },
+                { path: "/futsal", label:"My Futsal", icon: <RiFootballLine />},
+                { path: "/payment", label:"Billing", icon: <MdAttachMoney />},
+            ]
             : []),
     ];
 
@@ -52,7 +57,7 @@ const Sidebar = () => {
                     {menuItems.map(({ path, label, icon }) => (
                         <li
                             key={path}
-                            className={`mb-4 p-2 cursor-pointer ${
+                            className={`mb-2 p-2 cursor-pointer ${
                                 location.pathname === path
                                     ? "bg-rose-600"
                                     : "hover:bg-green-900"

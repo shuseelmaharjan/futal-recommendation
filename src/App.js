@@ -8,6 +8,10 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import PrivateRoute from "./config/PrivateRoute";
 import Requests from "./components/Requests/Requests";
 import Booking from "./components/Booking/Booking";
+import Futsal from "./components/Futsal/Futsal";
+import Payment from "./components/Payment/Payment";
+import { ToastContainer, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
 
@@ -20,7 +24,22 @@ const App = () => {
                 <Route path="/dashboard" element={<PrivateRoute><LoadOut><Dashboard /></LoadOut></PrivateRoute>} />
                 <Route path="/requests" element={<PrivateRoute><LoadOut><Requests /></LoadOut></PrivateRoute>} />
                 <Route path="/bookings" element={<PrivateRoute><LoadOut><Booking /></LoadOut></PrivateRoute>} />
+                <Route path="/futsal" element={<PrivateRoute><LoadOut><Futsal /></LoadOut></PrivateRoute>} />
+                <Route path="/payment" element={<PrivateRoute><LoadOut><Payment /></LoadOut></PrivateRoute>} />
             </Routes>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Bounce}
+            />
         </Router>
     );
 };
