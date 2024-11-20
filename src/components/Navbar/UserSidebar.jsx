@@ -1,9 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom"; 
-import { FaHouseUser } from "react-icons/fa";
 import { RiReservedFill } from "react-icons/ri";
-import { FaKey } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
+import { FaKey, FaUser, FaHouseUser } from "react-icons/fa";
 import { MdOutlineAttachMoney } from "react-icons/md";
 
 

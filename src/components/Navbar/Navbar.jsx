@@ -3,22 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import apiClient from "../apiClient";
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [username, setUsername] = useState(null);
-  const [userRole, setUserRole] = useState('');
   const [loading, setLoading] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,21 +18,12 @@ const Navbar = () => {
       }
 
       try {
-        const [usernameResponse, roleResponse] = await Promise.all([
-          apiClient.get('/api/username', {
+        const usernameResponse = await apiClient.get('api/username', {
             headers: {
               'Authorization': `Bearer ${token}`,
             },
-          }),
-          apiClient.get('/api/user-role', {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          }),
-        ]);
-
+        });
         setUsername(usernameResponse.data.username);
-        setUserRole(roleResponse.data.role);
         setLoading(false);
       } catch (err) {
         console.error("Failed to fetch user data:", err);
@@ -91,14 +71,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed w-full top-0 left-0 z-10 transition-all duration-1000 ${
-        userRole === 'user'
-          ? 'bg-emerald-950'
-          : isScrolled
-          ? 'bg-emerald-950'
-          : 'bg-transparent'
-      }`}
-    >
+      className="fixed w-full top-0 left-0 z-10 transition-all duration-1000 bg-emerald-950">
       <div className="container mx-auto flex items-center justify-between p-4">
         <div className="text-white text-2xl font-bold">
           <Link to="/">Logo</Link>

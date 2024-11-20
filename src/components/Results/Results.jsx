@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import apiClient from '../apiClient';
 
 export const Results = ({ latitude, longitude }) => {
-  // Sample data for futsals, you can replace this with actual data
-  const futsals = [
-    { id: 1, name: 'Futsal A', location: 'Location A', phone: '123-456-7890' },
-    { id: 2, name: 'Futsal B', location: 'Location B', phone: '098-765-4321' },
-    // Add more futsal data as needed
-  ];
+  const [futsals, setFutsals] = useState([]);  
+  const [loading, setLoading] = useState(true);  
+  const [error, setError] = useState(null); 
+
+  useEffect(() => {
+    // Fetch data from the API
+    const fetchFutsals = async () => {
+      try {
+        const response = await apiClient.get('api/futsals');
+        setFutsals(response.data);
+      } catch (err) {
+        setError(err);  
+      } finally {
+        setLoading(false);  
+      }
+    };
+
+    fetchFutsals();
+  }, []); 
+
+  if (loading) {
+    return <div className="text-center">Loading...</div>;  
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500">{error}</div>;  
+  }
 
   return (
     <div className="container mx-auto p-4">
