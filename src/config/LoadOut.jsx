@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar/Navbar";
 import Sidebar from "../components/Navbar/Sidebar";
 import Header from "../components/Navbar/Header";
 import apiClient from "../components/apiClient";
+import UserSidebar from "../components/Navbar/UserSidebar";
 
 const LoadOut = ({ children }) => {
   const [role, setRole] = useState(null); 
@@ -78,8 +79,13 @@ const LoadOut = ({ children }) => {
     if (role === "user") {
       return (
         <>
-          <Navbar />
-          {children}
+        <div className="flex h-screen bg-white">
+          <UserSidebar/>
+          <div className="flex-1 flex flex-col">
+            <Navbar />
+            <main className="flex-1 p-6 bg-gray-100">{children}</main>
+          </div>
+        </div>
         </>
       );
     }
