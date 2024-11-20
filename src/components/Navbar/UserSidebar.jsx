@@ -1,10 +1,11 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom"; 
 import { FaHouseUser } from "react-icons/fa";
-import { GiConfirmed } from "react-icons/gi";
 import { RiReservedFill } from "react-icons/ri";
 import { FaKey } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
+import { MdOutlineAttachMoney } from "react-icons/md";
+
 
 const UserSidebar = () => {
   const location = useLocation();
@@ -30,9 +31,9 @@ const UserSidebar = () => {
           </li>
           <li className="mb-4">
             <Link
-              to="/mybooking"
+              to="/booking"
               className={`flex items-center p-3 rounded-lg transition duration-200 
-                ${isActive("/mybooking") ? "bg-emerald-100 text-emerald-950" : "hover:bg-emerald-100 hover:text-emerald-950"}`}
+                ${isActive("/booking") ? "bg-emerald-100 text-emerald-950" : "hover:bg-emerald-100 hover:text-emerald-950"}`}
             >
               <RiReservedFill className="mr-2" />
               <span className="font-medium">My Booking</span>
@@ -40,12 +41,12 @@ const UserSidebar = () => {
           </li>
           <li className="mb-4">
             <Link
-              to="/confirmation"
+              to="/billing"
               className={`flex items-center p-3 rounded-lg transition duration-200 
-                ${isActive("/confirmation") ? "bg-emerald-100 text-emerald-950" : "hover:bg-emerald-100 hover:text-emerald-950"}`}
+                ${isActive("/billing") ? "bg-emerald-100 text-emerald-950" : "hover:bg-emerald-100 hover:text-emerald-950"}`}
             >
-              <GiConfirmed className="mr-2" />
-              <span className="font-medium">Confirmation</span>
+              <MdOutlineAttachMoney className="mr-2" />
+              <span className="font-medium">Billing</span>
             </Link>
           </li>
           <li className="mb-4">
