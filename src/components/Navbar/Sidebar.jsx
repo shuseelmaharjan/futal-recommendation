@@ -37,7 +37,7 @@ const Sidebar = () => {
             : []),
         ...(role === "vendor"
             ? [
-                { path: "/bookings", label: "Booking", icon: <FaShoppingCart /> },
+                { path: "/booking", label: "Booking", icon: <FaShoppingCart /> },
                 { path: "/futsal", label: "My Futsal", icon: <RiFootballLine /> },
                 { path: "/billing", label: "Billing", icon: <MdAttachMoney /> },
               ]
