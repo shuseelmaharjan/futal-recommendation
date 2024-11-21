@@ -11,7 +11,7 @@ export const Footer = () => {
         </nav>
       </div>
       <div className="container mx-auto text-center border-t border-gray-400 pt-4">
-        <p>&copy; 2024 Futsal Management System</p>
+        <p>&copy; 2024 Futsal Recommendation System</p>
       </div>
     </footer>
   );

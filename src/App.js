@@ -30,7 +30,7 @@ const App = () => {
         <Route path="/profile" element={<PrivateRoute><LoadOut><Profile /></LoadOut></PrivateRoute>} />
         <Route path="/booking" element={<PrivateRoute><LoadOut><Booking /></LoadOut></PrivateRoute>} />
         <Route path="/change-password" element={<PrivateRoute><LoadOut><ChangePassword /></LoadOut></PrivateRoute>} />
-        <Route path="/:slug" element={<LoadOut><FutsalDetails /></LoadOut>} /> {/* No auth needed here */}
+        <Route path="/:slug" element={<LoadOut><FutsalDetails /></LoadOut>} /> 
       </Routes>
       <ToastContainer
         position="top-right"

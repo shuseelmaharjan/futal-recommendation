@@ -13,7 +13,6 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Redirect to dashboard if tokens exist
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
     const refreshToken = localStorage.getItem('refresh_token');
@@ -48,7 +47,6 @@ const Login = () => {
         localStorage.setItem('access_token', response.data.access_token);
         localStorage.setItem('refresh_token', response.data.refresh_token);
 
-        // Check user role and navigate accordingly
         const roleResponse = await apiClient.get('/api/user-role', {
           headers: {
             'Authorization': `Bearer ${response.data.access_token}`,
@@ -129,6 +127,11 @@ const Login = () => {
               Don't have an account?
               <span className="font-medium text-green-700 cursor-pointer hover:underline mx-2">
                 <Link to="/register">Sign Up</Link>
+              </span>
+            </p>
+            <p className="text-gray-500">
+              <span className="font-medium text-green-700 cursor-pointer hover:underline mx-2">
+                <Link to="/">Back to Site</Link>
               </span>
             </p>
           </div>
