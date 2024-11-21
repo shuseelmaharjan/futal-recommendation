@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import apiClient from '../apiClient';
 
 export const Results = ({ latitude, longitude }) => {
-  const [futsals, setFutsals] = useState([]);  
-  const [loading, setLoading] = useState(true);  
-  const [error, setError] = useState(null); 
+  const [futsals, setFutsals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch data from the API
@@ -13,21 +16,21 @@ export const Results = ({ latitude, longitude }) => {
         const response = await apiClient.get('api/futsals');
         setFutsals(response.data);
       } catch (err) {
-        setError(err);  
+        setError(err);
       } finally {
-        setLoading(false);  
+        setLoading(false);
       }
     };
 
     fetchFutsals();
-  }, []); 
+  }, []);
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;  
+    return <div className="text-center">Loading...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-red-500">{error}</div>;  
+    return <div className="text-center text-red-500">{error.message}</div>;
   }
 
   return (
@@ -35,7 +38,7 @@ export const Results = ({ latitude, longitude }) => {
       <h1 className="text-3xl font-bold mb-4 text-center">Futsals nearby you.</h1>
       <div className="flex mb-4">
         <p>Latitude: {latitude}, </p>
-        <p className='mx-2'>Longitude: {longitude}</p>
+        <p className="mx-2">Longitude: {longitude}</p>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300">
@@ -56,7 +59,12 @@ export const Results = ({ latitude, longitude }) => {
                 <td className="px-4 py-2 border-b">{futsal.location}</td>
                 <td className="px-4 py-2 border-b">{futsal.phone}</td>
                 <td className="px-4 py-2 border-b">
-                  <button className="text-blue-500 hover:underline">View Details</button>
+                  <button
+                    className="text-blue-500 hover:underline"
+                    onClick={() => navigate(`/${futsal.slug}`)}
+                  >
+                    View Details
+                  </button>
                 </td>
               </tr>
             ))}

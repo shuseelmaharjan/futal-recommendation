@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import apiClient from "../apiClient";
-
+import logo from './../../assets/logoW.png';
 const Navbar = () => {
   const [username, setUsername] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -54,11 +54,9 @@ const Navbar = () => {
         }
       );
 
-      // Clear tokens from local storage
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
 
-      // Redirect to login
       navigate('/login');
     } catch (err) {
       console.error("Logout failed:", err);
@@ -74,7 +72,13 @@ const Navbar = () => {
       className="fixed w-full top-0 left-0 z-10 transition-all duration-1000 bg-emerald-950">
       <div className="container mx-auto flex items-center justify-between p-4">
         <div className="text-white text-2xl font-bold">
-          <Link to="/">Logo</Link>
+          <Link to="/">
+          <img 
+                    src={logo} 
+                    alt="Logo" 
+                    className="h-[35px] w-auto" 
+                />
+          </Link>
         </div>
 
         <div className="flex items-center">

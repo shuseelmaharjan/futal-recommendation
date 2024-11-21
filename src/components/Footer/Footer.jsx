@@ -7,8 +7,6 @@ export const Footer = () => {
       <div className="container mx-auto text-center">
         <nav className="flex justify-center space-x-8 mb-4">
           <Link to="/" className="hover:text-black">Home</Link>
-          <Link to="/about" className="hover:text-black">About</Link>
-          <Link to="/events" className="hover:text-black">Events</Link>
           <Link to="/login" className="hover:text-black">Login</Link>
         </nav>
       </div>
